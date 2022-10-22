@@ -17,7 +17,7 @@ namespace OnlineRestaurant.Controllers
         private readonly SignInManager<AppUser> _signInManager;
         private readonly ISendGridEmail _sendGridEmail;
         private readonly ApplicationDbContext _context;
-        public AccountController(UserManager<AppUser> userManager,
+        public AccountController(UserManager<AppUser> userManager, 
             SignInManager<AppUser> signInManager,
             ISendGridEmail sendGridEmail, ApplicationDbContext context)
         {
@@ -255,7 +255,6 @@ namespace OnlineRestaurant.Controllers
             returnUrl = returnUrl ?? Url.Content("~/");
             if (ModelState.IsValid)
             {
-                var user = new AppUser { Email = registerViewModel.Email, UserName = registerViewModel.UserName, FullName = registerViewModel.UserName};
                 var result = await _userManager.CreateAsync(user, registerViewModel.Password);
                 if (result.Succeeded)
                 {
