@@ -1,10 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Identity
-
-@*@inject SignInManager<AppUser> SignInManager
-@inject UserManager<AppUser> UserManager*@
-
-
-
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager; 
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -33,38 +29,35 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="MenuItem" asp-action="Index"><i class="bi bi"></i> Menu</a>
                         </li>
-                    <li class="nav-item dropdown">
-                      <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                         <i class="bi bi-gear"></i> Management
-                      </a>
-                      <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" asp-controller="MenuCategory" asp-action="Index"><i class=""></i> Categories</a></li>
-                        <li><a class="dropdown-item" asp-controller="MenuItem" asp-action="Index"><i class=""></i> Items</a></li>
-                      </ul>
-                    </li>
                     
+                    
+                        @if(User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                            {
+                                <li class="nav-item dropdown">
+                                  <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                     <i class="bi bi-gear"></i> Management
+                                  </a>
+                                  <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" asp-controller="MenuCategory" asp-action="Index"><i class=""></i> Categories</a></li>
+                                    <li><a class="dropdown-item" asp-controller="MenuItem" asp-action="Index"><i class=""></i> Items</a></li>
+                                  </ul>
+                                </li>
+                               
+                            }
 
 
-
-
-                       
-
-                       @* @if(User.Identity.IsAuthenticated && User.IsInRole("Admin"))
-                        {*@
-                       
-                        @*}*@
                         
                     </ul>
                    
 
-                   @* <form class="form-inline my-2 my-lg-0" asp-controller="Movies" asp-action="Filter" style="padding-right: 25px;">
-                        <input name="searchString" type="text" class="form-control" placeholder="Search for a movie..." aria-label="Recipient's username" aria-describedby="button-addon2">
+                    <form class="d-flex align-items-center" asp-controller="MenuItem" asp-action="Filter" style="padding-right: 25px;">
+                        <input name="searchString" type="text" class="form-control" placeholder="Search for a food..." aria-label="Search" aria-describedby="search-addon">
                         <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="bi bi-search"></i></button>
-                    </form>*@
+                    </form>
 
-                    @*<ul class="navbar-nav">
+                    <ul class="navbar-nav">
                         @await Component.InvokeAsync("ShoppingCartSummary")
-                    </ul>*@
+                    </ul>
 
                     <partial name="_Identity.cshtml" />
                 </div>
@@ -89,79 +82,10 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
+    @await RenderSectionAsync("Stripe", required: false)
+
 </body>
 </html>
 
 
-                        @*<li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>*@
-                       @* <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
-                        </li>*@
-                        @*<li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Menu">Menu</a>
-                        </li>*@
-                         @*@if(SignInManager.IsSignedIn(User))
-                        {
-                           <li class="nav-item">
-                                <a class="nav-link" href="#">Hello @UserManager.GetUserName(User)</a>
-                            </li>
-                            <li class="nav-item">
-                                <form id="logoutForm" method="post" class="form-inline" asp-controller="Account"
-                                asp-action="LogOff">
-                                    <button type="submit" class="btn nav-link">Logout</button>
-                                </form>
-                            </li>*@
-                             @*<li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="bi bi-gear"></i> Management
-                                    </a>
-
-                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                        <a class="dropdown-item" asp-controller="Category" asp-action="Index"><i class="bi bi-camera-reels"></i> Category</a>
-                                        <a class="dropdown-item" asp-controller="Items" asp-action="Index"><i class="bi bi-headset"></i> Items</a>
-                                    </div>
-                            </li>
-                        }
-                        else
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="Identity" asp-controller="Account" asp-action="Login">Login</a>
-                            </li>  
-                                                    <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="Identity" asp-controller="Account" asp-action="Register">Register</a>
-                        </li>
-                                              <li class="nav-item">
-                                <form id="logoutForm" method="post" class="form-inline" asp-controller="Account"
-                                asp-action="LogOff">
-                                    <button type="submit" class="btn nav-link">Logout</button>
-                                </form>
-                            </li>
-                        }
                         
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
-    <div class="container-fluid">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
-
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2022 - OnlineRestaurant - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
-</body>
-</html>*@

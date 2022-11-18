@@ -1,13 +1,124 @@
-﻿@model IEnumerable<MenuItem>
+﻿@using System.Globalization
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+.accordion {
+  background-color: #eee;
+  color: #444;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+  transition: 0.4s;
+}
+
+.active, .accordion:hover {
+  background-color: #ccc; 
+}
+
+.panel {
+ 
+  padding: 0 18px;
+  display: none;
+  background-color: white;
+  overflow: hidden;
+}
+</style>
+</head>
+<body>
+
+@model IEnumerable<MenuItem>
 
 @{
     ViewData["Title"] = "List of MenuItems";
 }
 
-<div<div class="row">
-    @foreach (var item in Model)
+<div class="row">
+    @foreach (var category in Model.Select(x => x.MenuCategory).Distinct())
     {
-        <div class="col-md-4 col-xs-6 border-primary mb-3">
+        <button class="accordion"><span>@category.Name</span> </button>
+       @* <div class="panel">*@
+       
+            @foreach (var item in Model.Where(x => category.Id == x.CategoryId))
+            {
+               <div class="col-md-4 col-xs-6 border-primary mb-3">
+                <div class="card mb-3" style="max-width: 540px;">
+                    <div class="row g-0">
+                        <div class="col-md-12">
+                            <div class="card-header text-white bg-info">
+                                <p class="card-text">
+                                    <h5 class="card-title">
+                                        @item.MenuName
+                                        @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                                        {
+                                                                
+                                            <a class="text-white float-right" asp-action="Edit" asp-route-id="@item.Id"><i class="bi bi-pencil-square"></i></a>
+                                            <a class="text-white float-left" asp-action="Delete" asp-route-id="@item.Id"><i class="bi bi-trash3"></i></a>
+                                        }
+                                    </h5>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <img src="@item.ImageUrl" width="100%" alt="@item.MenuName">
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card-body">
+                                    <p class="card-text"><b>Description: </b>@item.Description </p>
+                                    <p class="card-text"><b>Category: </b>@item.MenuCategory.Name</p>
+                                        
+                          
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="card-footer ">
+                                    <p class="card-text">
+                                        <a class="btn btn-outline-primary float-right" asp-action="Details" asp-route-id="@item.Id">
+                                        <i class="bi bi-eye-fill"></i> Show Details
+                                        </a>
+                                           
+                                        <a class="btn btn-success text-white " 
+                                        asp-controller="Orders" 
+                                        asp-action="AddItemToShoppingCart" 
+                                        asp-route-id="@item.Id">
+                                        <i class="bi bi-cart-plus"></i> Add to Cart (Price @item.Price.ToString("c", new CultureInfo("en-IE")))</a>
+                                
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+              </div>
+                             
+            }
+            @*</div>     *@                         
+        }
+ </div>
+    
+
+
+   @* @foreach (var item in Model)
+    {*@
+       
+        @*if (item.MenuCategory.Name.Equals("Starter"))
+        {
+            <tr class="align-middle">
+            @Html.DisplayFor(modelItem => item.Price)
+            </tr>  
+        }*@
+        @* @if (item.MenuCategory.Name.Equals("Starter"))
+        {
+            <p>@item.MenuCategory.Name</p>
+                
+        }*@
+         
+        @*<div class="col-md-4 col-xs-6 border-primary mb-3">
             <div class="card mb-3" style="max-width: 540px;">
                 <div class="row g-0">
                     <div class="col-md-12">
@@ -15,11 +126,12 @@
                             <p class="card-text">
                                 <h5 class="card-title">
                                     @item.MenuName
-                                   @* @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
-                                    {*@
+                                    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                                    {
+                                        Console.WriteLine("item here", item);
                                         <a class="text-white float-right" asp-action="Edit" asp-route-id="@item.Id"><i class="bi bi-pencil-square"></i></a>
-                                      @*  <a class="text-white float-left" asp-action="Delete" asp-route-id="@item.Id"><i class="bi bi-pencil-square"></i></a>*@
-                                    @*}*@
+                                       @* <a class="text-white float-left" asp-action="Delete" asp-route-id="@item.Id"><i class="bi bi-pencil-square"></i></a>*@
+                                    @*}
                                 </h5>
                             </p>
                         </div>
@@ -33,18 +145,19 @@
                             <p class="card-text"><b>Category: </b>@item.MenuCategory.Name</p>
                             @*<p class="card-text"><b>Price €: </b>@item.Price</p>*@
                           
-                        </div>
+                       @* </div>
                     </div>
                     <div class="col-md-12">
                         <div class="card-footer ">
                             <p class="card-text">
                                   <a class="btn btn-outline-primary float-right" asp-action="Details" asp-route-id="@item.Id">
                                     <i class="bi bi-eye-fill"></i> Show Details
-                                </a> <a class="btn btn-outline-primary float-left" asp-action="Delete" asp-route-id="@item.Id">
+                                    </a>
+                                @*</a> <a class="btn btn-outline-primary float-left" asp-action="Delete" asp-route-id="@item.Id">
                                     <i class="bi bi-eye-fill"></i> Delete
-                                </a>
+                                </a>*@
                                 @*<a class="btn btn-outline-primary float-right"> <i class="bi bi-cart-plus"></i> Add to Cart (Price @item.Price.ToString("c"))</a>*@
-                                   <a class="btn btn-success text-white " 
+                                  @* <a class="btn btn-success text-white " 
                                    asp-controller="Orders" 
                                    asp-action="AddItemToShoppingCart" 
                                    asp-route-id="@item.Id">
@@ -55,8 +168,30 @@
                     </div>
                 </div>
             </div>
-        </div>
-    }
-</div>
+        </div>*@
+    @*}
+</div>*@
+
+
+
 
 @await Html.PartialAsync("_CreateItem", "MenuItem") 
+
+<script>
+var acc = document.getElementsByClassName("accordion");
+var i;
+
+for (i = 0; i < acc.length; i++) {
+  acc[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var panel = this.nextElementSibling;
+    if (panel.style.display === "block") {
+      panel.style.display = "none";
+    } else {
+      panel.style.display = "block";
+    }
+  });
+}
+</script>
+</body>
+</html>

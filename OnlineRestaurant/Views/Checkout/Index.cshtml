@@ -1,0 +1,31 @@
+﻿@using Microsoft.Extensions.Options
+@inject IOptions<OnlineRestaurant.Helpers.StripeSettings> Stripe
+@{
+ViewData["Title"] = "Home Page";
+}
+@{
+ViewData["Title"] = "Index";
+}@{
+    Layout = "_Layout";
+}
+<div class="text-center">
+<form asp-action="Processing" asp-controller="Checkout" method="post">
+<article>
+<label>Amount EUR€: @ViewBag.cart</label>
+ 
+</article>
+@*<script src="https://js.stripe.com/v3/"></script>
+*@<script src="//checkout.stripe.com/v2/checkout.js"
+                class="stripe-button"
+                data-key="@Stripe.Value.PublishableKey"
+                data-amount="@ViewBag.Total"
+                data-name="[Online Restaurant]"
+                data-currency="eur"
+                data-locale="en"
+                data-discription="Sample charge"
+                data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+                @*data-zip-code="true">*@
+</script>
+</form>
+</div>
+

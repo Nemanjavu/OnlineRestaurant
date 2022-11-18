@@ -12,8 +12,8 @@ using OnlineRestaurant.Data;
 namespace OnlineRestaurant.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221005190134_SecondInit")]
-    partial class SecondInit
+    [Migration("20221119004259_old")]
+    partial class old
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -177,6 +177,7 @@ namespace OnlineRestaurant.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("FullName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
@@ -312,9 +313,6 @@ namespace OnlineRestaurant.Migrations
                     b.Property<int>("MenuItemId")
                         .HasColumnType("int");
 
-                    b.Property<int>("MovieId")
-                        .HasColumnType("int");
-
                     b.Property<int>("OrderId")
                         .HasColumnType("int");
 
@@ -323,7 +321,7 @@ namespace OnlineRestaurant.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MovieId");
+                    b.HasIndex("MenuItemId");
 
                     b.HasIndex("OrderId");
 
@@ -432,7 +430,7 @@ namespace OnlineRestaurant.Migrations
                 {
                     b.HasOne("OnlineRestaurant.Models.MenuItem", "MenuItem")
                         .WithMany()
-                        .HasForeignKey("MovieId")
+                        .HasForeignKey("MenuItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

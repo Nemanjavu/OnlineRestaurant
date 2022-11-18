@@ -1,16 +1,21 @@
 ﻿@using OnlineRestaurant.Data.ViewModels;
+@using System.Globalization
 @model ShoppingCartViewModel
 
 @{
     ViewData["Title"] = "Shopping cart summary";
 }
-
+<meta name="description" content="A demo of a payment on Stripe" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="checkout.css" />
+    <script src="https://polyfill.io/v3/polyfill.min.js?version=3.52.1&features=fetch"></script>
+    <script src="https://js.stripe.com/v3/"></script>
 <div class="row">
     <div class="col-md-8 offset-2">
         <div class="text-center">
             <h2>You shopping cart summary</h2>
         </div>
-
+   
         <table class="table">
             <thead>
                 <tr>
@@ -27,8 +32,8 @@
                     <tr>
                         <td class="align-middle">@item.Amount</td>
                         <td class="align-middle">@item.MenuItem.MenuName</td>
-                        <td class="align-middle">@item.MenuItem.Price.ToString("c")</td>
-                        <td class="align-middle">@((item.Amount*item.MenuItem.Price).ToString("c"))</td>
+                        <td class="align-middle">@item.MenuItem.Price.ToString("c", new CultureInfo("en-IE"))</td>
+                        <td class="align-middle">@((item.Amount*item.MenuItem.Price).ToString("c", new CultureInfo("en-IE")))</td>
                         <td class="align-middle">
                             <a class="text-danger" asp-controller="Orders" asp-action="RemoveItemToShoppingCart"
                                asp-route-id="@item.MenuItem.Id">
@@ -48,20 +53,24 @@
                     <td colspan="2"></td>
                     <td><b>Total:</b></td>
                     <td>
-                        @Model.ShoppingCartTotal.ToString("c")
+                        @Model.ShoppingCartTotal.ToString("c", new CultureInfo("en-IE"))
                     </td>
                     <td></td>
                 </tr>
             </tfoot>
         </table>
 
-        <div class="text-right">
-            <div class="btn-group">
-                <a class="btn btn-outline-primary" asp-action="CompleteOrder">
-                        Complete order
-                    </a>
+               
+
                 <div id="paypal-btn"></div>
+                <!-- Display a payment form -->
+    
                 <span style="padding:5px"></span>
+                
+               <a class="btn btn-outline-primary" asp-controller="Checkout" asp-action="Index" >Checkout</a>
+
+                
+                
                 <a class="btn btn-outline-success" asp-controller="MenuItem" asp-action="Index">
                     Add more items
                 </a>
@@ -70,6 +79,7 @@
 
     </div>
 </div>
+     
 
 @section Scripts{
 
@@ -97,7 +107,7 @@
                     transactions: [{
                         amount: {
                             total: _total,
-                            currency: 'USD'
+                            currency: 'EUR'
                         }
                     }]
                 });
@@ -111,4 +121,16 @@
             }
         }, '#paypal-btn')
     </script>
+
+}
+
+
+
+
+
+
+
+        
+    
+    
 }

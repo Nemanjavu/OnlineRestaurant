@@ -1,9 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using OnlineRestaurant.Data.Services;
+using OnlineRestaurant.Data.Static;
 using OnlineRestaurant.Models;
 using System.Diagnostics;
 
 namespace OnlineRestaurant.Controllers
 {
+    
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OnlineRestaurant.Data;
+using OnlineRestaurant.Data.Cart;
 using OnlineRestaurant.Data.Static;
 using OnlineRestaurant.Interfaces;
 using OnlineRestaurant.Models;
@@ -17,13 +18,15 @@ namespace OnlineRestaurant.Controllers
         private readonly SignInManager<AppUser> _signInManager;
         private readonly ISendGridEmail _sendGridEmail;
         private readonly ApplicationDbContext _context;
+        private readonly ShoppingCart _shoppingCart;
         public AccountController(UserManager<AppUser> userManager, 
             SignInManager<AppUser> signInManager,
-            ISendGridEmail sendGridEmail, ApplicationDbContext context)
+            ISendGridEmail sendGridEmail, ShoppingCart shoppingCart, ApplicationDbContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _sendGridEmail = sendGridEmail;
+            _shoppingCart = shoppingCart;
             _context = context;
         }
 
@@ -56,7 +59,7 @@ namespace OnlineRestaurant.Controllers
                 var result = await _userManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
-                   // await _userManager.AddToRoleAsync(user, "Pokemon");
+                   
                     result = await _userManager.AddLoginAsync(user, info);
                     if (result.Succeeded)
                     {
@@ -203,7 +206,6 @@ namespace OnlineRestaurant.Controllers
                 }
                 var result = await _signInManager.PasswordSignInAsync(userName, loginViewModel.Password, loginViewModel.RememberMe, lockoutOnFailure: false);
 
-                //var result = await _signInManager.PasswordSignInAsync(loginViewModel.Email, loginViewModel.Password, loginViewModel.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
                     return RedirectToAction("Index", "Home");
@@ -230,49 +232,37 @@ namespace OnlineRestaurant.Controllers
             return View(registerViewModel);
         }
 
-        //[HttpPost]
-        //public async Task<IActionResult> Register(RegisterViewModel registerViewModel, string? returnUrl = null)
-        //{
-        //    registerViewModel.ReturnUrl = returnUrl;
-        //    returnUrl = returnUrl ?? Url.Content("~/");
-        //    if (ModelState.IsValid)
-        //    {
-        //        var user = new AppUser { Email = registerViewModel.Email, UserName = registerViewModel.UserName };
-        //        var result = await _userManager.CreateAsync(user, registerViewModel.Password);
-        //        if (result.Succeeded)
-        //        {
-        //            await _signInManager.SignInAsync(user, isPersistent: false);
-        //            return LocalRedirect(returnUrl);
-        //        }
-        //        ModelState.AddModelError("Password", "User could not be created. Password not unique enough");
-        //    }
-        //    return View(registerViewModel);
-        //}
+        
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel registerViewModel, string? returnUrl = null)
         {
             registerViewModel.ReturnUrl = returnUrl;
             returnUrl = returnUrl ?? Url.Content("~/");
-            if (ModelState.IsValid)
-            {
-                var result = await _userManager.CreateAsync(user, registerViewModel.Password);
-                if (result.Succeeded)
-                {
-                    //if (registerViewModel.RoleSelected != null && registerViewModel.RoleSelected.Length > 0 && registerViewModel.RoleSelected=="Trainer")
-                    //{
-                    //    await _userManager.AddToRoleAsync(user, "Trainer");
-                    //}
-                    //else
-                    //{
-                    //    await _userManager.AddToRoleAsync(user, "Pokemon");
-                    //}
-                    await _userManager.AddToRoleAsync(user, UserRoles.User);
+            if (!ModelState.IsValid) return View(registerViewModel);
 
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-                    return LocalRedirect(returnUrl);
-                }
-                ModelState.AddModelError("Password", "User could not be created. Password not unique enough");
+            var user = await _userManager.FindByEmailAsync(registerViewModel.Email);
+            if (user != null)
+            {
+                TempData["Error"] = "This email address is already in use";
+                return View(registerViewModel);
             }
+
+            var newUser = new AppUser()
+            {
+                FullName = registerViewModel.FullName,
+                Email = registerViewModel.Email,
+                UserName = registerViewModel.Email
+            };
+            var newUserResponse = await _userManager.CreateAsync(newUser, registerViewModel.Password);
+
+            if (newUserResponse.Succeeded) { 
+                await _userManager.AddToRoleAsync(newUser, UserRoles.User);
+                await _signInManager.SignInAsync(newUser, isPersistent: false);
+                return LocalRedirect(returnUrl);
+
+                }
+            
+
             return View(registerViewModel);
         }
 
@@ -287,7 +277,13 @@ namespace OnlineRestaurant.Controllers
         public async Task<IActionResult> Logoff()
         {
             await _signInManager.SignOutAsync();
+            await _shoppingCart.ClearShoppingCartAsync();
             return RedirectToAction("Index", "Home");
+        }
+
+        public IActionResult AccessDenied(string ReturnUrl)
+        {
+            return View();
         }
     }
 }

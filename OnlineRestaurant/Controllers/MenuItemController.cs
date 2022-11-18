@@ -1,35 +1,39 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using OnlineRestaurant.Data;
 using OnlineRestaurant.Data.Services;
+using OnlineRestaurant.Data.Static;
 using OnlineRestaurant.Data.ViewModels;
 
 namespace OnlineRestaurant.Controllers
 {
+    [Authorize(Roles = UserRoles.Admin)]
     public class MenuItemController : Controller
     {
+
         private readonly IItemService _service;
 
         public MenuItemController(IItemService service)
         {
             _service = service;
         }
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             var allItems = await _service.GetAllAsync(n => n.MenuCategory);
             return View(allItems);
         }
-
+        [AllowAnonymous]
         public async Task<IActionResult> Filter(string searchString)
         {
             var allMenuItems = await _service.GetAllAsync(n => n.MenuCategory);
 
             if (!string.IsNullOrEmpty(searchString))
             {
-                //var filteredResult = allMovies.Where(n => n.Name.ToLower().Contains(searchString.ToLower()) || n.Description.ToLower().Contains(searchString.ToLower())).ToList();
-
-                var filteredResultNew = allMenuItems.Where(n => string.Equals(n.MenuName, searchString, StringComparison.CurrentCultureIgnoreCase) || string.Equals(n.Description, searchString, StringComparison.CurrentCultureIgnoreCase)).ToList();
+                var filteredResultNew = allMenuItems.Where(n => n.MenuName.Contains(searchString, StringComparison.OrdinalIgnoreCase));
+                //var filteredResultNew = allMenuItems.Where(n => string.Equals(n.MenuName, searchString, StringComparison.CurrentCultureIgnoreCase) || string.Equals(n.Description, searchString, StringComparison.CurrentCultureIgnoreCase)).ToList();
 
                 return View("Index", filteredResultNew);
             }
@@ -38,7 +42,7 @@ namespace OnlineRestaurant.Controllers
         }
 
         //GET: MenuItems/Details/1
-        // [AllowAnonymous]
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int id)
         {
             var menuItemsDetail = await _service.GetMenuItemByIdAsync(id);
@@ -111,10 +115,10 @@ namespace OnlineRestaurant.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // //Get: Categories/Delete/1
+        // //Get: MenuItems/Delete/1
         public async Task<IActionResult> Delete(int id)
         {
-            var menuItemDetails = await _service.GetMenuItemByIdAsync(id);
+            var menuItemDetails = await _service.GetByIdAsync(id);
             if (menuItemDetails == null) return View("NotFound");
             return View(menuItemDetails);
         }
@@ -122,7 +126,7 @@ namespace OnlineRestaurant.Controllers
         [HttpPost, ActionName("Delete")]
         public async Task<IActionResult> DeleteConfirm(int id)
         {
-            var menuItemDetails = await _service.GetMenuItemByIdAsync(id);
+            var menuItemDetails = await _service.GetByIdAsync(id);
             if (menuItemDetails == null) return View("NotFound");
 
             await _service.DeleteAsync(id);

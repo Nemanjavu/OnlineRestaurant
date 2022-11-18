@@ -1,9 +1,14 @@
-﻿@model List<Order>
+﻿@using Microsoft.Extensions.Options
+@using System.Globalization
+@inject IOptions<OnlineRestaurant.Helpers.StripeSettings> Stripe
+@model List<Order>
 
 @{ 
     ViewData["Title"] = "All orders";
 }
-
+<div class="text-center">
+    
+</div>
 <div class="row">
     <div class="col-md-8 offset-2">
         <p>
@@ -33,14 +38,14 @@
                             {
                                 <li>
                                     <div class="alert alert-info" role="alert">
-                                        <span class="badge bg-success">@item.Amount</span> [@item.Price.ToString("c")] - @item.MenuItem.MenuName
+                                        <span class="badge bg-success">@item.Amount</span> [@item.Price.ToString("c", new CultureInfo("en-IE"))] - @item.MenuItem.MenuName
                                     </div>
                                 </li>
                             }
                         </ul>
                     </td>
                     <td class="align-middle">
-                        @order.OrderItems.Select(m => m.MenuItem.Price * m.Amount).Sum().ToString("c")
+                        @order.OrderItems.Select(m => m.MenuItem.Price * m.Amount).Sum().ToString("c", new CultureInfo("en-IE"))
                     </td>
                     @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
                     {
@@ -48,8 +53,9 @@
                     }
                     </tr>
                 }
+                
             </tbody>
         </table>
 
-    </div>
+   
 </div>

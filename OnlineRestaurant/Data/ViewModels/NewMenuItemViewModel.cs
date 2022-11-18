@@ -23,23 +23,9 @@ namespace OnlineRestaurant.Data.ViewModels
         [Required(ErrorMessage = "Menu Item photo URL is required")]
         public string ImageUrl { get; set; }
 
-        
-
-        //[Display(Name = "Select a category")]
-        //[Required(ErrorMessage = "Movie category is required")]
-        //public MenuCategory MovieCategory { get; set; }
-
-        //Relationships
-        //[Display(Name = "Select actor(s)")]
-        //[Required(ErrorMessage = "Movie actor(s) is required")]
-        //public List<int> ActorIds { get; set; }
 
         [Display(Name = "Select a menu category")]
         [Required(ErrorMessage = "Menu category is required")]
         public int CategoryId { get; set; }
-
-        //[Display(Name = "Select a producer")]
-        //[Required(ErrorMessage = "Movie producer is required")]
-        //public int ProducerId { get; set; }
     }
 }

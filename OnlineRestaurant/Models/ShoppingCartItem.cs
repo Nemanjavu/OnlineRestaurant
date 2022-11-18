@@ -9,7 +9,7 @@ namespace OnlineRestaurant.Models
 
         public MenuItem MenuItem { get; set; }
         public int Amount { get; set; }
-
+        
         public string ShoppingCartId { get; set; }
     }
 }

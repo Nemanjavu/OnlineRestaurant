@@ -1,4 +1,5 @@
-﻿@model MenuItem
+﻿@using System.Globalization
+@model MenuItem
 
 @{
     ViewData["Title"] = "Menu item details";
@@ -22,18 +23,24 @@
                 </div>
                 <div class="col-md-8">
                     <div class="card-body">
-                        <p class="card-text">@Model.Description</p>
+                        <p class="card-text"> @Model.Description</p>
                         <p class="card-text">
                             <b>Category: </b>
-                            <a asp-controller="MenuCategory" asp-action="Details" asp-route-id="@Model.CategoryId">
+                            
+                            @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                            {
+                                <a asp-controller="MenuCategory" asp-action="Details" asp-route-id="@Model.CategoryId">
                                 @Model.MenuCategory.Name
-                            </a>
+                                </a>
+                            }
+                            else
+                            {
+                                @Model.MenuCategory.Name
+                            }
+                            
                         </p>
                        
-                      @*  <p class="card-text"><b>Category: </b>@Model.MovieCategory</p>
-                        <p class="card-text"><b>Start Date: </b>@Model.StartDate.ToString("dd MMM yy")</p>
-                        <p class="card-text"><b>End Date: </b>@Model.EndDate.ToString("dd MMM yy")</p>
-                        *@
+                     
 
                     </div>
                 </div>
@@ -43,9 +50,9 @@
                             <a class="btn btn-outline-primary float-right" asp-action="Index">
                                 Back to List
                             </a>
-                           @* <a class="btn btn-success text-white  @((DateTime.Now > Model.EndDate) ? "disabled" : "")" 
+                            <a class="btn btn-success text-white " 
                                asp-controller="Orders" 
-                               asp-action="AddItemToShoppingCart" asp-route-id="@Model.Id"><i class="bi bi-cart-plus"></i> Add to Cart (Price @Model.Price.ToString("c"))</a>*@
+                               asp-action="AddItemToShoppingCart" asp-route-id="@Model.Id"><i class="bi bi-cart-plus"></i> Add to Cart (Price @Model.Price.ToString("c", new CultureInfo("en-IE")))</a>
                         </p>
                     </div>
                 </div>
