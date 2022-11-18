@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using OnlineRestaurant.Controllers;
 using OnlineRestaurant.Models;
 
 namespace OnlineRestaurant.Data.Cart
@@ -80,5 +81,8 @@ namespace OnlineRestaurant.Data.Cart
             _context.ShoppingCartItems.RemoveRange(items);
             await _context.SaveChangesAsync();
         }
+
+        
+       
     }
 }

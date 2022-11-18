@@ -12,8 +12,8 @@ using OnlineRestaurant.Data;
 namespace OnlineRestaurant.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221005205726_ThirtInit")]
-    partial class ThirtInit
+    [Migration("20221023123600_newIdentity")]
+    partial class newIdentity
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -177,6 +177,7 @@ namespace OnlineRestaurant.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("FullName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")

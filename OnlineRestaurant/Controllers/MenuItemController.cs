@@ -1,26 +1,31 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using OnlineRestaurant.Data;
 using OnlineRestaurant.Data.Services;
+using OnlineRestaurant.Data.Static;
 using OnlineRestaurant.Data.ViewModels;
 
 namespace OnlineRestaurant.Controllers
 {
+    [Authorize(Roles = UserRoles.Admin)]
     public class MenuItemController : Controller
     {
+
         private readonly IItemService _service;
 
         public MenuItemController(IItemService service)
         {
             _service = service;
         }
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             var allItems = await _service.GetAllAsync(n => n.MenuCategory);
             return View(allItems);
         }
-
+        [AllowAnonymous]
         public async Task<IActionResult> Filter(string searchString)
         {
             var allMenuItems = await _service.GetAllAsync(n => n.MenuCategory);
@@ -38,7 +43,7 @@ namespace OnlineRestaurant.Controllers
         }
 
         //GET: MenuItems/Details/1
-        // [AllowAnonymous]
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int id)
         {
             var menuItemsDetail = await _service.GetMenuItemByIdAsync(id);

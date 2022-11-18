@@ -1,9 +1,13 @@
-﻿@model List<Order>
+﻿@using Microsoft.Extensions.Options
+@inject IOptions<OnlineRestaurant.Helpers.StripeSettings> Stripe
+@model List<Order>
 
 @{ 
     ViewData["Title"] = "All orders";
 }
-
+<div class="text-center">
+    
+</div>
 <div class="row">
     <div class="col-md-8 offset-2">
         <p>
@@ -48,8 +52,9 @@
                     }
                     </tr>
                 }
+                
             </tbody>
         </table>
 
-    </div>
+   
 </div>

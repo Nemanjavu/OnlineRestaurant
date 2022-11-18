@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace OnlineRestaurant.Migrations
 {
-    public partial class Init : Migration
+    public partial class newIdentity : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -220,15 +220,14 @@ namespace OnlineRestaurant.Migrations
                     Amount = table.Column<int>(type: "int", nullable: false),
                     Price = table.Column<double>(type: "float", nullable: false),
                     MenuItemId = table.Column<int>(type: "int", nullable: false),
-                    MovieId = table.Column<int>(type: "int", nullable: false),
                     OrderId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_OrderItems", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_OrderItems_MenuItems_MovieId",
-                        column: x => x.MovieId,
+                        name: "FK_OrderItems_MenuItems_MenuItemId",
+                        column: x => x.MenuItemId,
                         principalTable: "MenuItems",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -306,9 +305,9 @@ namespace OnlineRestaurant.Migrations
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OrderItems_MovieId",
+                name: "IX_OrderItems_MenuItemId",
                 table: "OrderItems",
-                column: "MovieId");
+                column: "MenuItemId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OrderItems_OrderId",

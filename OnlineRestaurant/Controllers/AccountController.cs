@@ -253,26 +253,44 @@ namespace OnlineRestaurant.Controllers
         {
             registerViewModel.ReturnUrl = returnUrl;
             returnUrl = returnUrl ?? Url.Content("~/");
-            if (ModelState.IsValid)
-            {
-                var result = await _userManager.CreateAsync(user, registerViewModel.Password);
-                if (result.Succeeded)
-                {
-                    //if (registerViewModel.RoleSelected != null && registerViewModel.RoleSelected.Length > 0 && registerViewModel.RoleSelected=="Trainer")
-                    //{
-                    //    await _userManager.AddToRoleAsync(user, "Trainer");
-                    //}
-                    //else
-                    //{
-                    //    await _userManager.AddToRoleAsync(user, "Pokemon");
-                    //}
-                    await _userManager.AddToRoleAsync(user, UserRoles.User);
+            if (!ModelState.IsValid) return View(registerViewModel);
 
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-                    return LocalRedirect(returnUrl);
-                }
-                ModelState.AddModelError("Password", "User could not be created. Password not unique enough");
+            var user = await _userManager.FindByEmailAsync(registerViewModel.Email);
+            if (user != null)
+            {
+                TempData["Error"] = "This email address is already in use";
+                return View(registerViewModel);
             }
+
+            var newUser = new AppUser()
+            {
+                FullName = registerViewModel.FullName,
+                Email = registerViewModel.Email,
+                UserName = registerViewModel.Email
+            };
+            var newUserResponse = await _userManager.CreateAsync(newUser, registerViewModel.Password);
+
+            if (newUserResponse.Succeeded)
+                await _userManager.AddToRoleAsync(newUser, UserRoles.User);
+                await _signInManager.SignInAsync(newUser, isPersistent: false);
+                return LocalRedirect(returnUrl);
+            //if (result.Succeeded)
+            //{
+            //    //if (registerViewModel.RoleSelected != null && registerViewModel.RoleSelected.Length > 0 && registerViewModel.RoleSelected=="Trainer")
+            //    //{
+            //    //    await _userManager.AddToRoleAsync(user, "Trainer");
+            //    //}
+            //    //else
+            //    //{
+            //    //    await _userManager.AddToRoleAsync(user, "Pokemon");
+            //    //}
+            //    await _userManager.AddToRoleAsync(user, UserRoles.User);
+
+
+            //}
+
+
+
             return View(registerViewModel);
         }
 
@@ -288,6 +306,11 @@ namespace OnlineRestaurant.Controllers
         {
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
+        }
+
+        public IActionResult AccessDenied(string ReturnUrl)
+        {
+            return View();
         }
     }
 }

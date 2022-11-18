@@ -1,11 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OnlineRestaurant.Data;
 using OnlineRestaurant.Data.Services;
+using OnlineRestaurant.Data.Static;
 using OnlineRestaurant.Models;
 
 namespace OnlineRestaurant.Controllers
 {
+    [Authorize(Roles = UserRoles.Admin)]
     public class MenuCategoryController : Controller
     {
         private readonly ICategoryService _service;
@@ -14,6 +17,7 @@ namespace OnlineRestaurant.Controllers
         {
                 _service = service;
         }
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             var data = await _service.GetAllAsync();
@@ -38,7 +42,7 @@ namespace OnlineRestaurant.Controllers
         }
 
         //Get: Categories/Details/1
-        // [AllowAnonymous]
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int id)
         {
             var categoriesDetails = await _service.GetByIdAsync(id);

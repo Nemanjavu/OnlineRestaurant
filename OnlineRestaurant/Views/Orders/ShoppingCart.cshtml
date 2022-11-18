@@ -4,12 +4,31 @@
 @{
     ViewData["Title"] = "Shopping cart summary";
 }
-
+<meta name="description" content="A demo of a payment on Stripe" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="checkout.css" />
+    <script src="https://polyfill.io/v3/polyfill.min.js?version=3.52.1&features=fetch"></script>
+    <script src="https://js.stripe.com/v3/"></script>
 <div class="row">
     <div class="col-md-8 offset-2">
         <div class="text-center">
             <h2>You shopping cart summary</h2>
         </div>
+   @*<script>
+        $(document).ready(function ()
+        {
+            $("#datetimepicker").datetimepicker(
+                {
+                    defaultDate: '@Model.EntryDateTime',
+                    showTodayButton: true,
+                    format: 'YYYY-MM-DD HH:mm',
+                    showClose: true,
+                    showClear: true,
+                    toolbarPlacement: 'top',
+                    stepping: 15
+                });
+        });
+    </script>*@
 
         <table class="table">
             <thead>
@@ -55,13 +74,23 @@
             </tfoot>
         </table>
 
-        <div class="text-right">
-            <div class="btn-group">
-                <a class="btn btn-outline-primary" asp-action="CompleteOrder">
+                @*<a class="btn btn-outline-primary" asp-action="CompleteOrder">
                         Complete order
-                    </a>
+                    </a>*@
+                
+
                 <div id="paypal-btn"></div>
+                <!-- Display a payment form -->
+    
                 <span style="padding:5px"></span>
+                
+               <a class="btn btn-outline-primary" asp-controller="Checkout" asp-action="Index" >Checkout</a>
+
+                 @*<a class="btn btn-outline-success" asp-controller="Payment" asp-action="CreateCheckoutSession">
+                    Pay with Card
+                </a>*@
+                
+              @* <button id="pay-button" type="submit" asp-controller="Payment" asp-action="CreateCheckoutSession" class="btn btn-success  btn-product"><span ></span> Pay with Card</button>*@
                 <a class="btn btn-outline-success" asp-controller="MenuItem" asp-action="Index">
                     Add more items
                 </a>
@@ -70,6 +99,7 @@
 
     </div>
 </div>
+     
 
 @section Scripts{
 
@@ -97,7 +127,7 @@
                     transactions: [{
                         amount: {
                             total: _total,
-                            currency: 'USD'
+                            currency: 'EUR'
                         }
                     }]
                 });
@@ -111,4 +141,16 @@
             }
         }, '#paypal-btn')
     </script>
+
+}
+
+
+
+
+
+
+
+        
+    
+    
 }

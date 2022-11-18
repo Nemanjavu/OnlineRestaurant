@@ -1,10 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Identity
-
-@*@inject SignInManager<AppUser> SignInManager
-@inject UserManager<AppUser> UserManager*@
-
-
-
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager; 
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,7 +19,7 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">OnlineRestaurant</a>
+                <a class="navbar-brand" asp-area="MenuItem" asp-controller="Index" asp-action="Index">OnlineRestaurant</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -33,38 +29,51 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="MenuItem" asp-action="Index"><i class="bi bi"></i> Menu</a>
                         </li>
-                    <li class="nav-item dropdown">
-                      <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                         <i class="bi bi-gear"></i> Management
-                      </a>
-                      <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" asp-controller="MenuCategory" asp-action="Index"><i class=""></i> Categories</a></li>
-                        <li><a class="dropdown-item" asp-controller="MenuItem" asp-action="Index"><i class=""></i> Items</a></li>
-                      </ul>
-                    </li>
                     
+                    
+                        @if(User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                            {
+                                <li class="nav-item dropdown">
+                                  <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                     <i class="bi bi-gear"></i> Management
+                                  </a>
+                                  <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" asp-controller="MenuCategory" asp-action="Index"><i class=""></i> Categories</a></li>
+                                    <li><a class="dropdown-item" asp-controller="MenuItem" asp-action="Index"><i class=""></i> Items</a></li>
+                                  </ul>
+                                </li>
+                               @* <li class="nav-item dropdown">
+                                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="bi bi-gear"></i> Management
+                                    </a>
 
+                                    @* <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                       <a class="dropdown-item" asp-controller="MenuCategory" asp-action="Index"><i class=""></i> Categories</a>
+                                        <a class="dropdown-item" asp-controller="MenuItem" asp-action="Index"><i class=""></i> Items</a>
+                                    </div>*@
+                                 @* <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" asp-controller="MenuCategory" asp-action="Index"><i class=""></i> Categories</a></li>
+                                    <li><a class="dropdown-item" asp-controller="MenuItem" asp-action="Index"><i class=""></i> Items</a></li>
+                                  </ul>
+                                </li>*@
+                            }
 
 
 
                        
 
-                       @* @if(User.Identity.IsAuthenticated && User.IsInRole("Admin"))
-                        {*@
-                       
-                        @*}*@
                         
                     </ul>
                    
 
-                   @* <form class="form-inline my-2 my-lg-0" asp-controller="Movies" asp-action="Filter" style="padding-right: 25px;">
-                        <input name="searchString" type="text" class="form-control" placeholder="Search for a movie..." aria-label="Recipient's username" aria-describedby="button-addon2">
+                    <form class="d-flex align-items-center" asp-controller="MenuItem" asp-action="Filter" style="padding-right: 25px;">
+                        <input name="searchString" type="text" class="form-control" placeholder="Search for a food..." aria-label="Search" aria-describedby="search-addon">
                         <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="bi bi-search"></i></button>
-                    </form>*@
+                    </form>
 
-                    @*<ul class="navbar-nav">
+                    <ul class="navbar-nav">
                         @await Component.InvokeAsync("ShoppingCartSummary")
-                    </ul>*@
+                    </ul>
 
                     <partial name="_Identity.cshtml" />
                 </div>
@@ -89,6 +98,8 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
+    @await RenderSectionAsync("Stripe", required: false)
+
 </body>
 </html>
 
@@ -98,7 +109,7 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>*@
+                        </li>
                        @* <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
                         </li>*@

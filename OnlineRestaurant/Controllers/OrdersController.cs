@@ -1,11 +1,17 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using OnlineRestaurant.Data.Cart;
 using OnlineRestaurant.Data.Services;
 using OnlineRestaurant.Data.ViewModels;
+using Stripe;
 using System.Security.Claims;
+
 
 namespace OnlineRestaurant.Controllers
 {
+    [Authorize]
+    
     public class OrdersController : Controller
     {
         private readonly IItemService _itemService;
@@ -26,8 +32,12 @@ namespace OnlineRestaurant.Controllers
             string userRole = User.FindFirstValue(ClaimTypes.Role);
 
             var orders = await _orderService.GetOrdersByUserIdAndRoleAsync(userId, userRole);
+
+
             return View(orders);
         }
+
+       
 
         public IActionResult ShoppingCart()
         {
@@ -38,12 +48,17 @@ namespace OnlineRestaurant.Controllers
             {
                 ShoppingCart = _shoppingCart,
                 ShoppingCartTotal = _shoppingCart.GetShoppingCartTotal()
+               
+                
             };
+            
 
             return View(response);
         }
 
-        public async Task<IActionResult> AddItemToShoppingCart(int id)
+
+        
+            public async Task<IActionResult> AddItemToShoppingCart(int id)
         {
             var item = await _itemService.GetMenuItemByIdAsync(id);
             if(item != null)
@@ -74,6 +89,10 @@ namespace OnlineRestaurant.Controllers
 
             return View("OrderCompleted");
         }
+
+       
+
+
 
     }
 }
