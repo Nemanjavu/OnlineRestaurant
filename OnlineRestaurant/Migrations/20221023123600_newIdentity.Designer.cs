@@ -12,8 +12,13 @@ using OnlineRestaurant.Data;
 namespace OnlineRestaurant.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
+<<<<<<< HEAD:OnlineRestaurant/Migrations/20221119004259_old.Designer.cs
+    [Migration("20221119004259_old")]
+    partial class old
+=======
     [Migration("20221023123600_newIdentity")]
     partial class newIdentity
+>>>>>>> 8924fa4a497e0f285d72bf59bb1e3145871da94b:OnlineRestaurant/Migrations/20221023123600_newIdentity.Designer.cs
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
