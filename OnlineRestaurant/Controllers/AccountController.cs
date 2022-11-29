@@ -232,7 +232,7 @@ namespace OnlineRestaurant.Controllers
             return View(registerViewModel);
         }
 
-        
+
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel registerViewModel, string? returnUrl = null)
         {
@@ -243,26 +243,26 @@ namespace OnlineRestaurant.Controllers
             var user = await _userManager.FindByEmailAsync(registerViewModel.Email);
             if (user != null)
             {
-                var result = await _userManager.CreateAsync(user, registerViewModel.Password);
-                if (result.Succeeded)
-                {
-                    //if (registerViewModel.RoleSelected != null && registerViewModel.RoleSelected.Length > 0 && registerViewModel.RoleSelected=="Trainer")
-                    //{
-                    //    await _userManager.AddToRoleAsync(user, "Trainer");
-                    //}
-                    //else
-                    //{
-                    //    await _userManager.AddToRoleAsync(user, "Pokemon");
-                    //}
-                    await _userManager.AddToRoleAsync(user, UserRoles.User);
+                TempData["Error"] = "This email address is already in use";
+                return View(registerViewModel);
+            }
 
-            if (newUserResponse.Succeeded) { 
+            var newUser = new AppUser()
+            {
+                FullName = registerViewModel.FullName,
+                Email = registerViewModel.Email,
+                UserName = registerViewModel.Email
+            };
+            var newUserResponse = await _userManager.CreateAsync(newUser, registerViewModel.Password);
+
+            if (newUserResponse.Succeeded)
+            {
                 await _userManager.AddToRoleAsync(newUser, UserRoles.User);
                 await _signInManager.SignInAsync(newUser, isPersistent: false);
                 return LocalRedirect(returnUrl);
 
-                }
-            
+            }
+
 
             return View(registerViewModel);
         }
