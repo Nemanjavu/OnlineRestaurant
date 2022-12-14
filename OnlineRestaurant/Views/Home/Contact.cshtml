@@ -1,0 +1,93 @@
+﻿@{
+    ViewData["Title"] = "Contact";
+}
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+         body {
+            background-color: #92ba92;
+         }
+
+         .contact-info-container{
+            background: #f1ddbf;
+            max-width: 70%;
+         }
+
+        .contact-hours-container{
+            background: #525e75;
+            margin-top: 60px;
+            max-width: 60%;
+        }
+        .contact-hours {
+            background: #78938a; 
+            padding: 40px 14px;
+            margin-top: -15px;
+            position: relative;
+        }
+        .contact-hours:before{
+            content: '';
+            width: 25px;
+            height: 25px;
+            background: #111;
+            position: absolute;
+            top: 5px;
+            left: -12px;
+            transform: rotate(-45deg);
+            z-index: -1;
+        }
+        .contact-hours .title {
+            font-size: 20px;
+            text-transform: uppercase;
+            padding-left: 5px;
+            border-left: 4px solid #ffac0c; 
+        }
+        .contact-hours li {
+            line-height: 30px;
+            border-bottom: 1px solid #fff; 
+        }
+        .contact-hours li:last-child {
+            border-bottom: none; 
+        }
+
+    </style>
+    </head>
+    <body>
+       <h1 class="text-center text-white p-2">Contact Us</h1>
+       <div class="container contact-info-container p-2 my-2 border">
+           <div class="row align-items-center text-center">
+              <div class="col-md-4 col-sm-12">
+                  <i class="bi bi-geo-alt"></i>
+                  <p>1 Main Street, Galway, Ireland</p>
+              </div>
+              <div class="col-md-4 col-sm-12">
+                   <i class="bi bi-telephone mt-4"></i>
+                   <p>085 654 4086</p>
+              </div>
+              <div class="col-md-4 col-sm-12">
+                    <i class="bi bi-envelope  mt-4"></i>
+                    <p>info@nemivuthairestaurant.ie</p>
+              </div>
+            </div>
+        </div>
+        <div class="container contact-hours-container mb-4">
+            <div class="row">
+                <div class="col-sm-8 justify-content-center">
+                    <div class="contact-hours">
+                        <h2 class="title text-dark">Opening Hours</h2>
+                        <ul class="list-unstyled text-white">
+                            <li>Monday <span class="pull-right">Closed</span></li>
+                            <li>Tuesday <span class="pull-right">13:00-22:00</span></li>
+                            <li>Wednesday <span class="pull-right">13:00-22:00</span></li>
+                            <li>Thursday <span class="pull-right">13:00-22:00</span></li>
+                            <li>Friday <span class="pull-right">13:00-23:30</span></li>
+                            <li>Saturday <span class="pull-right">11:00-23:30</span></li>
+                            <li>Sunday <span class="pull-right">11:00-22:00</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

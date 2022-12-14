@@ -6,37 +6,51 @@
     ViewData["Title"] = "Update menu item";
 }
 
-<div class="row">
-    <div class="col-md-8 offset-2">
-        <p>
-            <h4>Update menu item</h4>
-        </p>
+<head>
+    <style>
+         body {
+            background-color: #92ba92;
+         }
 
-        <div class="row">
-            <div class="col-md-8 offset-2">
-                <form asp-action="Edit">
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+         .form-container{
+            background-color: #fff;
+         }
 
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label asp-for="MenuName" class="control-label"></label>
-                                <input asp-for="MenuName" class="form-control" />
-                                <span asp-validation-for="MenuName" class="text-danger"></span>
-                            </div>
+         .form-container label{
+            color: #525e75; 
+         }
+    </style>
+</head>
+<body>
+    <div class="container mx-auto form-container p-5">
+    <div class="row">
+        <div class="col-md-8 offset-2">
+            <h4 class="text-center">Update menu item</h4>
+            <div class="row">
+                <div class="col-md-8 offset-2">
+                    <form asp-action="Edit">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group pb-3">
+                                    <label asp-for="MenuName" class="control-label"></label>
+                                    <input asp-for="MenuName" class="form-control" />
+                                    <span asp-validation-for="MenuName" class="text-danger"></span>
+                                </div>
                             
-                            <div class="form-group">
-                                <label asp-for="Price" class="control-label"></label>
-                                <input asp-for="Price" type="number" class="form-control" />
-                                <span asp-validation-for="Price" class="text-danger"></span>
-                            </div>
-                            <div class="form-group">
-                                <label asp-for="ImageUrl" class="control-label"></label>
+                                <div class="form-group pb-3">
+                                    <label asp-for="Price" class="control-label"></label>
+                                    <input asp-for="Price" type="number" class="form-control" />
+                                    <span asp-validation-for="Price" class="text-danger"></span>
+                                </div>
+                                <div class="form-group pb-3">
+                                    <label asp-for="ImageUrl" class="control-label"></label>
                                 <input asp-for="ImageUrl" class="form-control" />
                                 <span asp-validation-for="ImageUrl" class="text-danger"></span>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-6 pb-3">
                             <div class="form-group">
                                 <label asp-for="CategoryId" class="control-label"></label>
                                 <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.Categories"></select>
@@ -45,7 +59,7 @@
                             
                         </div>
                         <div class="col-md-12">
-                            <div class="form-group">
+                            <div class="form-group pb-3">
                                 <label asp-for="Description" class="control-label"></label>
                                 <textarea asp-for="Description" class="form-control"></textarea>
                                 <span asp-validation-for="Description" class="text-danger"></span>
@@ -57,9 +71,9 @@
                         <img width="100%" id="ImageUrlPreview" />
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group pb-3">
                         <input type="submit" value="Update" class="btn btn-outline-success float-right" />
-                        <a class="btn btn-outline-secondary" asp-action="Index">Show all</a>
+                        <a class="btn btn-outline-secondary" asp-action="Index">Back to Menu</a>
                     </div>
 
                 </form>
@@ -68,4 +82,6 @@
         </div>
 
     </div>
+    </div>
 </div>
+</body>

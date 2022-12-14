@@ -4,33 +4,50 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <style>
+        *, html {
+            box-sizing: border-box;
+        }
+        .footer {
+          position: absolute;
+          bottom: 0;
+          width: 100%;
+          line-height: 60px; 
+        }
+    </style>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - OnlineRestaurant</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+     <link rel="stylesheet" href="~/OnlineRestaurant.styles.css" asp-append-version="true" />
    <!-- JavaScript Bundle with Popper -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="~/css/site.css" />
-     @*<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css">*@
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
-
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">OnlineRestaurant</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="MenuItem" asp-action="Index"><i class="bi bi"></i> Menu</a>
-                        </li>
-                    
-                    
+   <header>
+       <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+         <div class="container-fluid">
+           <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">NemiVu Thai Restaurant</a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+               <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+               <ul class="navbar-nav flex-grow-1">
+                  <li class="nav-item">
+                     <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index"><i class="bi bi"></i> Home</a>
+                  </li>
+                  <li class="nav-item">
+                     <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="About"><i class="bi bi"></i> About</a>
+                  </li>
+                  <li class="nav-item">
+                     <a class="nav-link text-dark" asp-area="" asp-controller="MenuItem" asp-action="Index"><i class="bi bi"></i> Menu</a>
+                   </li>
+                    <li class="nav-item">
+                     <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Contact"><i class="bi bi"></i> Contact</a>
+                   </li>
                         @if(User.Identity.IsAuthenticated && User.IsInRole("Admin"))
                             {
                                 <li class="nav-item dropdown">
@@ -42,14 +59,8 @@
                                     <li><a class="dropdown-item" asp-controller="MenuItem" asp-action="Index"><i class=""></i> Items</a></li>
                                   </ul>
                                 </li>
-                               
-                            }
-
-
-                        
-                    </ul>
-                   
-
+                            }               
+                </ul>
                     <form class="d-flex align-items-center" asp-controller="MenuItem" asp-action="Filter" style="padding-right: 25px;">
                         <input name="searchString" type="text" class="form-control" placeholder="Search for a food..." aria-label="Search" aria-describedby="search-addon">
                         <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="bi bi-search"></i></button>
@@ -64,21 +75,15 @@
             </div>
         </nav>
     </header>
-    <div class="container-fluid">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-
-    </div>
-
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2022 - eRestaurant
+    <main role="main" class="pb-3">
+       @RenderBody()
+    </main>
+    <footer class="border-top p-1 text-muted bg-white footer ">
+        <div class="container text-right">
+            &copy; 2022 - NemiVu Thai Restaurant
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
 
     @await RenderSectionAsync("Scripts", required: false)

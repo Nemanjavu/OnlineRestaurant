@@ -3,23 +3,29 @@
 @inject IOptions<OnlineRestaurant.Helpers.StripeSettings> Stripe
 @model List<Order>
 
+<head>
+    <style>
+         body {
+            background-color: #92ba92;
+         }
+    </style>
+</head>
+<body>
+  
 @{ 
     ViewData["Title"] = "All orders";
 }
-<div class="text-center">
-    
-</div>
+
+<div class="container mx-autobg-white p-5">
+
 <div class="row">
     <div class="col-md-8 offset-2">
-        <p>
-            <h4>List of all your orders</h4>
-        </p>
-
-        <table class="table">
+        <h4 class="text-dark text-center">Here are all of your orders</h4>
+        <table class="table table-striped table-bordered bg-white">
             <thead>
                 <tr>
-                    <th>Order ID</th>
-                    <th>Items</th>
+                    <th>Order Number</th>
+                     <th>Items</th>
                     <th>Total</th>
                     @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
                     {
@@ -37,7 +43,7 @@
                             @foreach (var item in order.OrderItems)
                             {
                                 <li>
-                                    <div class="alert alert-info" role="alert">
+                                    <div class="alert alert-info-light" role="alert">
                                         <span class="badge bg-success">@item.Amount</span> [@item.Price.ToString("c", new CultureInfo("en-IE"))] - @item.MenuItem.MenuName
                                     </div>
                                 </li>
@@ -56,6 +62,7 @@
                 
             </tbody>
         </table>
-
-   
+     </div>
+    </div>
 </div>
+</body>

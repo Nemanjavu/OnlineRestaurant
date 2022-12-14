@@ -4,13 +4,21 @@
 @{
     ViewData["Title"] = "Menu item details";
 }
-
+<style>
+   body {
+          background-color: #92ba92;
+   }
+   .card-header{
+          background-color: #525e75;
+   }
+</style>
+<body>
 <div class="row">
     <div class="col-md-8 offset-2">
         <div class="card mb-12">
             <div class="row g-0">
                 <div class="col-md-12">
-                    <div class="card-header text-white bg-info">
+                    <div class="card-header text-white">
                         <p class="card-text">
                             <h5 class="card-title">
                                 @Model.MenuName
@@ -60,3 +68,4 @@
         </div>
     </div>
 </div>
+</body>

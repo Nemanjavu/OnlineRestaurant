@@ -2,8 +2,49 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
 
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+       body {
+         background-color: #92ba92;
+       }
+ 
+        .homepage-container h1{
+            text-transform: uppercase;
+            font-weight: 900;
+            color: #525e75;  
+        } 
+
+        .homepage-container button{
+            width: 100%;
+            background-color: #f1ddbf;
+            margin-bottom: 30px;
+        }
+
+        .homepage-container button a{
+            color: #525e75;
+            text-decoration:none;
+        }
+        .homepage-container button a:hover {
+            text-decoration: underline;
+            font-weight: 500;
+        }
+    </style>
+    </head>
+    <body>
+       <div class="container homepage-container pt-5">
+          <div class="row">
+             <div class="col-md-6 col-sm-12 mt-md-5 bg-opacity-10 p-md-3 pb-sm-5 justify-content-space-around">
+                <h1>Welcome to NemiVu<br>  Thai Restaurant</h1>
+                <p>We pride ourselves on creating healthy Thai fusion food that can be enjoyed from the comfort of your own home!</p>
+                <button type="button" class="btn btn-lg"> <a asp-area="" asp-controller="MenuItem" asp-action="Index"><i class="bi bi"></i> ORDER NOW</a></button>
+             </div>
+             <div class="col-md-6 col-sm-12 justify-content-center">
+                <img src="https://images.pexels.com/photos/1640774/pexels-photo-1640774.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" class="img-fluid" alt="hompeage food image">
+             </div>
+          </div>
+       </div>
+   </body>
+</html>

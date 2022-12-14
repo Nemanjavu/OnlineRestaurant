@@ -1,45 +1,67 @@
 ﻿@using OnlineRestaurant.ViewModels
-
-
 @model RegisterViewModel
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<AppUser> signInManager
 
-<h1 class="text-info">Register</h1>
-<form asp-controller="Account" asp-action="Register" method="post" role="form">
-    <h4>Create a new account</h4>
-    <hr />
-    <div asp-validation-summary="All" class="text-danger"></div>
-    <div class="form-group">
-        <label asp-for="Email" class="col-md-2"></label>
-        <div class="col-md-10">
-            <input asp-for="Email" class="form-control" />
-            <span asp-validation-for="Email" class="text-danger"></span>
-        </div>
-    </div>
-    <div class="form-group">
-        <label asp-for="FullName" class="col-md-2"></label>
-        <div class="col-md-10">
-            <input asp-for="FullName" class="form-control" />
-            <span asp-validation-for="FullName" class="text-danger"></span>
-        </div>
-    </div>
-    <div class="form-group">
-        <label asp-for="Password" class="col-md-2"></label>
-        <div class="col-md-10">
-            <input asp-for="Password" class="form-control" />
-            <span asp-validation-for="Password" class="text-danger"></span>
-        </div>
-    </div>
-    <div class="form-group">
-        <label asp-for="ConfirmPassword" class="col-md-2"></label>
-        <div class="col-md-10">
-            <input asp-for="ConfirmPassword" class="form-control" />
-            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-        </div>
-    </div>
+  <head>
+    <style>
+         body {
+            background-color: #92ba92;
+         }
+
+         .form-container{
+            background-color: #fff;
+         }
+
+         .form-container label{
+            color: #525e75; 
+         }
+    </style>
+   </head>
+   <body>
+        <div class="container mx-auto">
+        <h1 class="text-white text-center">Create a new account</h1>
+        <form asp-controller="Account" asp-action="Register" method="post" role="form" class="form-container p-5 m-5">
+            <h4>Sign up now to make your first order!</h4>
+            <hr />
+               <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group row pb-3">
+                <label asp-for="Email" class="col-md-2 col-sm-2 col-form-label"></label>
+                <div class="col-md-10">
+                    <input asp-for="Email" class="form-control"  placeholder="Enter Email"/>
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row pb-3">
+                <label asp-for="FullName" class="col-md-2 col-form-label"></label>
+                <div class="col-md-10">
+                    <input asp-for="FullName" class="form-control" placeholder="Enter Full Name" />
+                    <span asp-validation-for="FullName" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row pb-3">
+                <label asp-for="Password" class="col-md-2 col-form-label"></label>
+                <div class="col-md-10">
+                    <input asp-for="Password" class="form-control" placeholder="Enter Password"/>
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row pb-3">
+                <label asp-for="ConfirmPassword" class="col-md-2 col-form-label"></label>
+                <div class="col-md-10">
+                    <input asp-for="ConfirmPassword" class="form-control" placeholder="Confirm Password" />
+                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                </div>
+            </div>
     
-    <div class="form-group">
-        <div class="offset-md-2 col-md-10">
-            <button type="submit" class="btn btn-success">Register</button>
+            <div class="form-group">
+                <div class="offset-md-2 col-md-10">
+                    <button type="submit" class="btn btn-success">Register</button>
+                </div>
+                <p class="text-center mt-3">Already have an account?
+                    <a asp-action="Login"><i class="bi bi"></i><span class="text-primary">Sign in</span></a>
+                </p>
+            </div>
+        </form>
         </div>
-    </div>
-</form>
+</body>
